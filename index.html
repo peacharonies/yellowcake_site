@@ -18,44 +18,34 @@
     <p><em>Built and managed by <a href="https://www.peacharonies.com">Peacharonies</a></em></p>
 
     <script>
-    async function checkServerStatus() {
+    function updateServerStatus() {
         const statusWidget = document.getElementById('server-status');
         const statusIndicator = document.getElementById('status-indicator');
         const statusText = document.getElementById('status-text');
         const playerCount = document.getElementById('player-count');
         const lastUpdated = document.getElementById('last-updated');
         
-        try {
-            // Using MinecraftServerStatus.net API (CORS-friendly)
-            const response = await fetch('https://api.mcstatus.io/v2/status/java/yellowcake.peacharonies.com:26676');
-            const data = await response.json();
-            
-            if (data.online) {
-                statusWidget.className = 'server-status status-online';
-                statusIndicator.className = 'status-indicator online';
-                statusText.textContent = 'Online';
-                playerCount.textContent = `${data.players.online}/${data.players.max}`;
-            } else {
-                statusWidget.className = 'server-status status-offline';
-                statusIndicator.className = 'status-indicator offline';
-                statusText.textContent = 'Offline';
-                playerCount.textContent = '0';
-            }
-        } catch (error) {
-            // Fallback: Show "Unknown" status
-            statusWidget.className = 'server-status status-loading';
-            statusIndicator.className = 'status-indicator loading';
-            statusText.textContent = 'Status Unknown';
-            playerCount.textContent = '-';
-            console.error('Error checking server status:', error);
+        // Manual status - you can update this when needed
+        const serverOnline = true; // Change this to false when server is down
+        const currentPlayers = 3;  // Update this manually
+        const maxPlayers = 20;
+        
+        if (serverOnline) {
+            statusWidget.className = 'server-status status-online';
+            statusIndicator.className = 'status-indicator online';
+            statusText.textContent = 'Online';
+            playerCount.textContent = `${currentPlayers}/${maxPlayers}`;
+        } else {
+            statusWidget.className = 'server-status status-offline';
+            statusIndicator.className = 'status-indicator offline';
+            statusText.textContent = 'Offline';
+            playerCount.textContent = '0';
         }
         
         lastUpdated.textContent = new Date().toLocaleTimeString();
     }
     
-    document.addEventListener('DOMContentLoaded', checkServerStatus);
-    setInterval(checkServerStatus, 60000); // Check every minute
-    document.getElementById('server-status').addEventListener('click', checkServerStatus);
+    document.addEventListener('DOMContentLoaded', updateServerStatus);
     </script>
 </body>
 </html>
