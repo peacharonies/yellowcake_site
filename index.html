@@ -7,6 +7,19 @@
     <h1>🎮 Yellowcake Minecraft Server</h1>
     <p><strong>Server Address:</strong> yellowcake.peacharonies.com</p>
     <p><strong>Version:</strong> Fabric 1.21.1</p>
+
+    <div class="server-address">
+        <strong>Server Address:</strong> <code>yellowcake.peacharonies.com</code>
+    </div>
+    
+    <!-- ADD THIS SIMPLE STATUS WIDGET -->
+    <div id="server-status" style="background: #f0f0f0; padding: 15px; margin: 20px 0; border-radius: 8px; text-align: center;">
+        <h3>🟢 Server Status: <span id="status-text">Online</span></h3>
+        <p>Players: <span id="player-count">3/20</span></p>
+    </div>
+    
+    <h2>Server Info</h2>
+    <!-- rest of your content -->
     
     <h2>How to Connect:</h2>
     <ol>
@@ -23,35 +36,27 @@
         </h3>
         <!-- etc... -->
     </div>
-    <script>
-    function updateServerStatus() {
-        const statusWidget = document.getElementById('server-status');
-        const statusIndicator = document.getElementById('status-indicator');
-        const statusText = document.getElementById('status-text');
-        const playerCount = document.getElementById('player-count');
-        const lastUpdated = document.getElementById('last-updated');
-        
-        // Manual status - you can update this when needed
-        const serverOnline = true; // Change this to false when server is down
-        const currentPlayers = 3;  // Update this manually
-        const maxPlayers = 20;
-        
-        if (serverOnline) {
-            statusWidget.className = 'server-status status-online';
-            statusIndicator.className = 'status-indicator online';
-            statusText.textContent = 'Online';
-            playerCount.textContent = `${currentPlayers}/${maxPlayers}`;
-        } else {
-            statusWidget.className = 'server-status status-offline';
-            statusIndicator.className = 'status-indicator offline';
-            statusText.textContent = 'Offline';
-            playerCount.textContent = '0';
-        }
-        
-        lastUpdated.textContent = new Date().toLocaleTimeString();
+<script>
+function updateStatus() {
+    console.log('Script running...');
+    
+    const statusElement = document.getElementById('status-text');
+    const playerElement = document.getElementById('player-count');
+    
+    if (statusElement) {
+        statusElement.textContent = 'Online';
+        console.log('Status updated!');
+    } else {
+        console.log('ERROR: status-text element not found!');
     }
     
-    document.addEventListener('DOMContentLoaded', updateServerStatus);
-    </script>
+    if (playerElement) {
+        playerElement.textContent = '3/20';
+    }
+}
+
+// Run when page loads
+document.addEventListener('DOMContentLoaded', updateStatus);
+</script>
 </body>
 </html>
