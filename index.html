@@ -15,5 +15,59 @@
         <li>Add Server: <code>yellowcake.peacharonies.com</code></li>
         <li>There you go!</li>
     </ol>
+<p><em>Built and managed by <a href="https://www.peacharonies.com">Peacharonies</a></em></p>
+
+<script>
+    async function checkServerStatus() {
+        const statusWidget = document.getElementById('server-status');
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        const playerCount = document.getElementById('player-count');
+        const versionText = document.getElementById('version-text');
+        const lastUpdated = document.getElementById('last-updated');
+        
+        try {
+            // Using mcsrvstat.us API - supports custom ports
+            const response = await fetch('https://api.mcsrvstat.us/2/yellowcake.peacharonies.com:26676');
+            const data = await response.json();
+            
+            if (data.online) {
+                // Server is online
+                statusWidget.className = 'server-status status-online';
+                statusIndicator.className = 'status-indicator online';
+                statusText.textContent = 'Online';
+                playerCount.textContent = `${data.players.online}/${data.players.max}`;
+                versionText.textContent = data.version || 'Unknown';
+            } else {
+                // Server is offline
+                statusWidget.className = 'server-status status-offline';
+                statusIndicator.className = 'status-indicator offline';
+                statusText.textContent = 'Offline';
+                playerCount.textContent = '0';
+                versionText.textContent = 'N/A';
+            }
+        } catch (error) {
+            // Error checking status
+            statusWidget.className = 'server-status status-offline';
+            statusIndicator.className = 'status-indicator offline';
+            statusText.textContent = 'Error checking status';
+            playerCount.textContent = '-';
+            versionText.textContent = 'N/A';
+            console.error('Error checking server status:', error);
+        }
+        
+        // Update timestamp
+        lastUpdated.textContent = new Date().toLocaleTimeString();
+    }
+    
+    // Check status on page load
+    document.addEventListener('DOMContentLoaded', checkServerStatus);
+    
+    // Auto-refresh every 30 seconds
+    setInterval(checkServerStatus, 30000);
+    
+    // Click to manually refresh
+    document.getElementById('server-status').addEventListener('click', checkServerStatus);
+</script>
 </body>
 </html>
