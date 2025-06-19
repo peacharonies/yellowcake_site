@@ -11,7 +11,27 @@
             padding: 20px;
             text-align: center;
         }
-        h1 { text-align: center; }
+        h1 { 
+            text-align: center; 
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            text-align: center;
+        }
+        
+        /* Center the numbered list properly */
+        ol {
+            display: inline-block;
+            text-align: left;
+            margin: 0 auto;
+        }
+        
+        /* Center the container that holds the list */
+        .steps-container {
+            text-align: center;
+        }
         code { 
             background: #f4f4f4; 
             padding: 2px 5px; 
@@ -58,12 +78,14 @@
     </div>
     
     <h2>How to Connect</h2>
-    <ol>
-        <li>Install <a href="/downloads/Yellowcake-1.0.0.mrpack" download>Modpack</a> <small>(2.66MB)</small> in Modrinth</li>
-        <li>Open Minecraft</li>
-        <li>Add Server: <code>yellowcake.peacharonies.com</code></li>
-        <li>There you go!</li>
-    </ol>
+    <div class="steps-container">
+        <ol>
+            <li>Install <a href="/downloads/Yellowcake-1.0.0.mrpack" download>Modpack</a> <small>(2.66MB)</small> in Modrinth</li>
+            <li>Open Minecraft</li>
+            <li>Add Server: <code>yellowcake.peacharonies.com</code></li>
+            <li>There you go!</li>
+        </ol>
+    </div>
     
     <p><em>Built and managed by <a href="https://www.peacharonies.com">Peacharonies</a></em></p>
 
