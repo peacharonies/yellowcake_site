@@ -107,13 +107,41 @@
         small {
             color: #aaa;
         }
+
+                /* Copy button styling */
+        #copy-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px; /* Another 13 easter egg! */
+            transition: background-color 0.3s;
+        }
+        
+        #copy-btn:hover {
+            background: #45a049;
+        }
+        
+        #copy-btn:active {
+            background: #3d8b40;
+        }
+        
+        /* Success feedback */
+        .copied {
+            background: #2196F3 !important;
+        }
     </style>
 </head>
 <body>
     <h1>Yellowcake Minecraft Server</h1>
     
     <div class="server-address">
-        <strong>Server Address:</strong> <code>yellowcake.peacharonies.com</code>
+        <strong>Server Address:</strong> 
+        <code id="server-url">yellowcake.peacharonies.com</code>
+        <button id="copy-btn" onclick="copyServerAddress()">📋 Copy</button>
     </div>
     
     <!-- SINGLE SERVER STATUS WIDGET -->
@@ -165,6 +193,56 @@
         }
     }
     
+            function copyServerAddress() {
+        const serverAddress = "yellowcake.peacharonies.com";
+        const button = document.getElementById('copy-btn');
+        
+        // Try to copy to clipboard
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            // Modern way
+            navigator.clipboard.writeText(serverAddress).then(function() {
+                showCopyFeedback(button);
+            }).catch(function(err) {
+                console.error('Failed to copy: ', err);
+                fallbackCopy(serverAddress, button);
+            });
+        } else {
+            // Fallback for older browsers
+            fallbackCopy(serverAddress, button);
+        }
+    }
+    
+    function fallbackCopy(text, button) {
+        // Create temporary input element
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showCopyFeedback(button);
+        } catch (err) {
+            console.error('Fallback copy failed: ', err);
+            button.textContent = '❌ Failed';
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    function showCopyFeedback(button) {
+        // Show success feedback
+        const originalText = button.textContent;
+        button.textContent = '✅ Copied!';
+        button.classList.add('copied');
+        
+        // Reset after 2 seconds
+        setTimeout(function() {
+            button.textContent = originalText;
+            button.classList.remove('copied');
+        }, 2000);
+    }
+            
     // Run when page loads
     document.addEventListener('DOMContentLoaded', updateStatus);
     </script>
