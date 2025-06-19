@@ -16,7 +16,13 @@
         <li>There you go!</li>
     </ol>
     <p><em>Built and managed by <a href="https://www.peacharonies.com">Peacharonies</a></em></p>
-
+    <div id="server-status" class="server-status status-loading">
+        <h3>
+            <span id="status-indicator" class="status-indicator loading"></span>
+            Server Status: <span id="status-text">Checking...</span>
+        </h3>
+        <!-- etc... -->
+    </div>
     <script>
     function updateServerStatus() {
         const statusWidget = document.getElementById('server-status');
