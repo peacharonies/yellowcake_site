@@ -66,25 +66,37 @@
     <p><em>Built and managed by <a href="https://www.peacharonies.com">Peacharonies</a></em></p>
 
     <script>
-        function updateStatus() {
-            console.log('Script running...');
+    function updateStatus() {
+        console.log('Script running...');
+        
+        const statusElement = document.getElementById('status-text');
+        const playerElement = document.getElementById('player-count');
+        const statusWidget = document.getElementById('server-status');
+        
+        if (statusElement) {
+            // UPDATE THESE VALUES MANUALLY WHEN THEY CHANGE
+            const isOnline = true;        // Change to false when server is down
+            const currentPlayers = 0;     // Update this to actual player count
+            const maxPlayers = 20;        // Your server's max players
             
-            const statusElement = document.getElementById('status-text');
-            const playerElement = document.getElementById('player-count');
-            const statusWidget = document.getElementById('server-status');
-            
-            if (statusElement) {
+            if (isOnline) {
                 statusElement.textContent = 'Online';
-                playerElement.textContent = '3/20';
+                playerElement.textContent = `${currentPlayers}/${maxPlayers}`;
                 statusWidget.className = 'status-online';
-                console.log('Status updated successfully!');
             } else {
-                console.log('ERROR: Elements not found!');
+                statusElement.textContent = 'Offline';
+                playerElement.textContent = '0/20';
+                statusWidget.className = 'status-offline';
             }
+            
+            console.log('Status updated successfully!');
+        } else {
+            console.log('ERROR: Elements not found!');
         }
-
-        // Run when page loads
-        document.addEventListener('DOMContentLoaded', updateStatus);
+    }
+    
+    // Run when page loads
+    document.addEventListener('DOMContentLoaded', updateStatus);
     </script>
 </body>
 </html>
