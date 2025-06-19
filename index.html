@@ -1,62 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Yellowcake Minecraft Server</title>
+    <title>🎮 Yellowcake Minecraft Server</title>
+    <meta charset="utf-8">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 600px; 
+            margin: 50px auto; 
+            padding: 20px; 
+        }
+        code { 
+            background: #f4f4f4; 
+            padding: 2px 5px; 
+            border-radius: 3px;
+        }
+        .server-address { 
+            font-size: 20px; 
+            background: #e8f5e8; 
+            padding: 15px; 
+            text-align: center;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        #server-status {
+            background: #f0f0f0; 
+            padding: 15px; 
+            margin: 20px 0; 
+            border-radius: 8px; 
+            text-align: center;
+            border: 2px solid #ddd;
+        }
+        .status-online { 
+            background: #e8f5e8; 
+            border-color: #4CAF50; 
+        }
+        .status-offline { 
+            background: #ffebee; 
+            border-color: #f44336; 
+        }
+    </style>
 </head>
 <body>
     <h1>🎮 Yellowcake Minecraft Server</h1>
-    <p><strong>Server Address:</strong> yellowcake.peacharonies.com</p>
-    <p><strong>Version:</strong> Fabric 1.21.1</p>
-
+    
     <div class="server-address">
         <strong>Server Address:</strong> <code>yellowcake.peacharonies.com</code>
     </div>
     
-    <!-- ADD THIS SIMPLE STATUS WIDGET -->
-    <div id="server-status" style="background: #f0f0f0; padding: 15px; margin: 20px 0; border-radius: 8px; text-align: center;">
-        <h3>🟢 Server Status: <span id="status-text">Online</span></h3>
-        <p>Players: <span id="player-count">3/20</span></p>
+    <!-- SINGLE SERVER STATUS WIDGET -->
+    <div id="server-status">
+        <h3>🟢 Server Status: <span id="status-text">Checking...</span></h3>
+        <p>Players: <span id="player-count">-/-</span></p>
+        <p>Version: <span id="version-text">Fabric 1.21.1</span></p>
     </div>
     
     <h2>Server Info</h2>
-    <!-- rest of your content -->
+    <ul>
+        <li><strong>Version:</strong> Fabric 1.21.1</li>
+        <li><strong>Type:</strong> Friends & Family</li>
+        <li><strong>Port:</strong> 26676</li>
+    </ul>
     
-    <h2>How to Connect:</h2>
+    <h2>How to Connect</h2>
     <ol>
         <li>Install <a href="/downloads/Yellowcake-1.0.0.mrpack" download>Modpack</a> <small>(2.66MB)</small> in Modrinth</li>
         <li>Open Minecraft</li>
         <li>Add Server: <code>yellowcake.peacharonies.com</code></li>
         <li>There you go!</li>
     </ol>
+    
     <p><em>Built and managed by <a href="https://www.peacharonies.com">Peacharonies</a></em></p>
-    <div id="server-status" class="server-status status-loading">
-        <h3>
-            <span id="status-indicator" class="status-indicator loading"></span>
-            Server Status: <span id="status-text">Checking...</span>
-        </h3>
-        <!-- etc... -->
-    </div>
-<script>
-function updateStatus() {
-    console.log('Script running...');
-    
-    const statusElement = document.getElementById('status-text');
-    const playerElement = document.getElementById('player-count');
-    
-    if (statusElement) {
-        statusElement.textContent = 'Online';
-        console.log('Status updated!');
-    } else {
-        console.log('ERROR: status-text element not found!');
-    }
-    
-    if (playerElement) {
-        playerElement.textContent = '3/20';
-    }
-}
 
-// Run when page loads
-document.addEventListener('DOMContentLoaded', updateStatus);
-</script>
+    <script>
+        function updateStatus() {
+            console.log('Script running...');
+            
+            const statusElement = document.getElementById('status-text');
+            const playerElement = document.getElementById('player-count');
+            const statusWidget = document.getElementById('server-status');
+            
+            if (statusElement) {
+                statusElement.textContent = 'Online';
+                playerElement.textContent = '3/20';
+                statusWidget.className = 'status-online';
+                console.log('Status updated successfully!');
+            } else {
+                console.log('ERROR: Elements not found!');
+            }
+        }
+
+        // Run when page loads
+        document.addEventListener('DOMContentLoaded', updateStatus);
+    </script>
 </body>
 </html>
