@@ -229,6 +229,59 @@
             `;
         }
     }
+    
+            function copyServerAddress() {
+        const serverAddress = "yellowcake.peacharonies.com";
+        const button = document.getElementById('copy-btn');
+        
+        // Try to copy to clipboard
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            // Modern way
+            navigator.clipboard.writeText(serverAddress).then(function() {
+                showCopyFeedback(button);
+            }).catch(function(err) {
+                console.error('Failed to copy: ', err);
+                fallbackCopy(serverAddress, button);
+            });
+        } else {
+            // Fallback for older browsers
+            fallbackCopy(serverAddress, button);
+        }
+    }
+    
+    function fallbackCopy(text, button) {
+        // Create temporary input element
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showCopyFeedback(button);
+        } catch (err) {
+            console.error('Fallback copy failed: ', err);
+            button.textContent = '❌ Failed';
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    function showCopyFeedback(button) {
+        // Show success feedback
+        const originalText = button.textContent;
+        button.textContent = '✅ Copied!';
+        button.classList.add('copied');
+        
+        // Reset after 2 seconds
+        setTimeout(function() {
+            button.textContent = originalText;
+            button.classList.remove('copied');
+        }, 2000);
+    }
+            
+    // Run when page loads
+    document.addEventListener('DOMContentLoaded', updateStatus);
     </script>
 </body>
 </html>
