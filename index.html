@@ -164,87 +164,71 @@
     <p><em>Built and managed by <a href="https://www.peacharonies.com">Peacharonies</a></em></p>
 
     <script>
-    function updateStatus() {
-        console.log('Script running...');
+    async function updateStatus() {
+        console.log('Fetching server status...');
         
         const statusElement = document.getElementById('status-text');
         const playerElement = document.getElementById('player-count');
         const statusWidget = document.getElementById('server-status');
         
-        if (statusElement) {
-            // UPDATE THESE VALUES MANUALLY WHEN THEY CHANGE
-            const isOnline = true;        // Change to false when server is down
-            const currentPlayers = 0;     // Update this to actual player count
-            const maxPlayers = 20;        // Your server's max players
+        if (!statusElement) {
+            console.log('ERROR: Elements not found!');
+            return;
+        }
+        
+        try {
+            // Fetch data from mcsrvstat.us API
+            const response = await fetch('https://api.mcsrvstat.us/3/yellowcake.peacharonies.com');
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('API Response:', data);
+            
+            const isOnline = data.online;
+            const currentPlayers = data.players ? data.players.online : 0;
+            const maxPlayers = data.players ? data.players.max : 20;
+            const serverVersion = data.version || 'Unknown';
             
             if (isOnline) {
                 statusElement.textContent = 'Online';
                 playerElement.textContent = `${currentPlayers}/${maxPlayers}`;
                 statusWidget.className = 'status-online';
+                statusWidget.innerHTML = `
+                    <h3>🟢 Server Status: <span id="status-text">Online</span></h3>
+                    <p>Players: <span id="player-count">${currentPlayers}/${maxPlayers}</span></p>
+                    <p>Version: <span id="version-text">${serverVersion}</span></p>
+                `;
             } else {
                 statusElement.textContent = 'Offline';
                 playerElement.textContent = '0/20';
                 statusWidget.className = 'status-offline';
+                statusWidget.innerHTML = `
+                    <h3>🔴 Server Status: <span id="status-text">Offline</span></h3>
+                    <p>Players: <span id="player-count">0/20</span></p>
+                    <p>Version: <span id="version-text">${serverVersion}</span></p>
+                `;
             }
             
             console.log('Status updated successfully!');
-        } else {
-            console.log('ERROR: Elements not found!');
-        }
-    }
-    
-            function copyServerAddress() {
-        const serverAddress = "yellowcake.peacharonies.com";
-        const button = document.getElementById('copy-btn');
-        
-        // Try to copy to clipboard
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            // Modern way
-            navigator.clipboard.writeText(serverAddress).then(function() {
-                showCopyFeedback(button);
-            }).catch(function(err) {
-                console.error('Failed to copy: ', err);
-                fallbackCopy(serverAddress, button);
-            });
-        } else {
-            // Fallback for older browsers
-            fallbackCopy(serverAddress, button);
-        }
-    }
-    
-    function fallbackCopy(text, button) {
-        // Create temporary input element
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        
-        try {
-            document.execCommand('copy');
-            showCopyFeedback(button);
-        } catch (err) {
-            console.error('Fallback copy failed: ', err);
-            button.textContent = '❌ Failed';
-        }
-        
-        document.body.removeChild(textArea);
-    }
-    
-    function showCopyFeedback(button) {
-        // Show success feedback
-        const originalText = button.textContent;
-        button.textContent = '✅ Copied!';
-        button.classList.add('copied');
-        
-        // Reset after 2 seconds
-        setTimeout(function() {
-            button.textContent = originalText;
-            button.classList.remove('copied');
-        }, 2000);
-    }
             
-    // Run when page loads
-    document.addEventListener('DOMContentLoaded', updateStatus);
+        } catch (error) {
+            console.error('Error fetching server status:', error);
+            
+            // Fallback display when API fails
+            statusElement.textContent = 'Unknown';
+            playerElement.textContent = '-/-';
+            statusWidget.className = 'status-offline';
+            statusWidget.innerHTML = `
+                <h3>❓ Server Status: <span id="status-text">Unknown</span></h3>
+                <p>Players: <span id="player-count">-/-</span></p>
+                <p>Version: <span id="version-text">Unknown</span></p>
+                <p><small>Unable to check status</small></p>
+            `;
+        }
+    }
     </script>
 </body>
 </html>
