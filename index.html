@@ -49,6 +49,38 @@
             border: 1px solid #444;
         }
         
+        #server-url {
+            cursor: pointer;
+            padding: 8px 12px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        
+        #server-url:hover {
+            background: #3d3d3d;
+            border-color: #64b5f6;
+        }
+        
+        #server-url.copied {
+            background: #2196F3;
+            border-color: #2196F3;
+        }
+        
+        #server-url-steps {
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        
+        #server-url-steps:hover {
+            background: #3d3d3d;
+            border-color: #64b5f6;
+        }
+        
+        #server-url-steps.copied {
+            background: #2196F3;
+            border-color: #2196F3;
+        }
+        
         .server-address { 
             font-size: 20px; 
             background: #2d4a2d; 
@@ -101,37 +133,12 @@
         /* Style the footer link */
         em {
             color: #999;
+            font-size: 9px;
         }
     
         /* Make small text more visible */
         small {
             color: #aaa;
-        }
-
-                /* Copy button styling */
-        #copy-btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            margin-left: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px; /* Another 13 easter egg! */
-            transition: background-color 0.3s;
-        }
-        
-        #copy-btn:hover {
-            background: #45a049;
-        }
-        
-        #copy-btn:active {
-            background: #3d8b40;
-        }
-        
-        /* Success feedback */
-        .copied {
-            background: #2196F3 !important;
         }
     </style>
 </head>
@@ -140,8 +147,7 @@
     
     <div class="server-address">
         <strong>Server Address:</strong> 
-        <code id="server-url">yellowcake.peacharonies.com</code>
-        <button id="copy-btn" onclick="copyServerAddress()">📋 Copy</button>
+        <code id="server-url" onclick="copyServerAddress()">yellowcake.peacharonies.com</code>
     </div>
     
     <!-- SINGLE SERVER STATUS WIDGET -->
@@ -155,7 +161,7 @@
         <ol>
             <li>Install <a href="/downloads/Yellowcake-1.0.0.mrpack" download>Modpack</a> <small>(2.66MB)</small> in Modrinth</li>
             <li>Open Minecraft</li>
-            <li>Add Server: <code>yellowcake.peacharonies.com</code></li>
+            <li>Add Server: <code id="server-url-steps" onclick="copyServerAddressSteps()">yellowcake.peacharonies.com</code></li>
             <li>There you go!</li>
         </ol>
     </div>
@@ -222,24 +228,24 @@
     
             function copyServerAddress() {
         const serverAddress = "yellowcake.peacharonies.com";
-        const button = document.getElementById('copy-btn');
+        const codeElement = document.getElementById('server-url');
         
         // Try to copy to clipboard
         if (navigator.clipboard && navigator.clipboard.writeText) {
             // Modern way
             navigator.clipboard.writeText(serverAddress).then(function() {
-                showCopyFeedback(button);
+                showCopyFeedback(codeElement);
             }).catch(function(err) {
                 console.error('Failed to copy: ', err);
-                fallbackCopy(serverAddress, button);
+                fallbackCopy(serverAddress, codeElement);
             });
         } else {
             // Fallback for older browsers
-            fallbackCopy(serverAddress, button);
+            fallbackCopy(serverAddress, codeElement);
         }
     }
     
-    function fallbackCopy(text, button) {
+    function fallbackCopy(text, element) {
         // Create temporary input element
         const textArea = document.createElement("textarea");
         textArea.value = text;
@@ -248,26 +254,45 @@
         
         try {
             document.execCommand('copy');
-            showCopyFeedback(button);
+            showCopyFeedback(element);
         } catch (err) {
             console.error('Fallback copy failed: ', err);
-            button.textContent = '❌ Failed';
+            element.textContent = '❌ Failed';
         }
         
         document.body.removeChild(textArea);
     }
     
-    function showCopyFeedback(button) {
+    function showCopyFeedback(element) {
         // Show success feedback
-        const originalText = button.textContent;
-        button.textContent = '✅ Copied!';
-        button.classList.add('copied');
+        const originalText = element.textContent;
+        element.textContent = '✅ Copied!';
+        element.classList.add('copied');
         
         // Reset after 2 seconds
         setTimeout(function() {
-            button.textContent = originalText;
-            button.classList.remove('copied');
+            element.textContent = originalText;
+            element.classList.remove('copied');
         }, 2000);
+    }
+    
+    function copyServerAddressSteps() {
+        const serverAddress = "yellowcake.peacharonies.com";
+        const codeElement = document.getElementById('server-url-steps');
+        
+        // Try to copy to clipboard
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            // Modern way
+            navigator.clipboard.writeText(serverAddress).then(function() {
+                showCopyFeedback(codeElement);
+            }).catch(function(err) {
+                console.error('Failed to copy: ', err);
+                fallbackCopy(serverAddress, codeElement);
+            });
+        } else {
+            // Fallback for older browsers
+            fallbackCopy(serverAddress, codeElement);
+        }
     }
             
     // Run when page loads
