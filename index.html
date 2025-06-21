@@ -147,7 +147,6 @@
     <!-- SINGLE SERVER STATUS WIDGET -->
     <div id="server-status">
         <h3>🟢 Server Status: <span id="status-text">Checking...</span></h3>
-        <p>Players: <span id="player-count">-/-</span></p>
         <p>Version: <span id="version-text">Fabric 1.21.1</span></p>
     </div>
     
@@ -168,7 +167,6 @@
         console.log('Fetching server status...');
         
         const statusElement = document.getElementById('status-text');
-        const playerElement = document.getElementById('player-count');
         const statusWidget = document.getElementById('server-status');
         
         if (!statusElement) {
@@ -188,26 +186,20 @@
             console.log('API Response:', data);
             
             const isOnline = data.online;
-            const currentPlayers = data.players ? data.players.online : 0;
-            const maxPlayers = data.players ? data.players.max : 20;
             const serverVersion = data.version || 'Unknown';
             
             if (isOnline) {
                 statusElement.textContent = 'Online';
-                playerElement.textContent = `${currentPlayers}/${maxPlayers}`;
                 statusWidget.className = 'status-online';
                 statusWidget.innerHTML = `
                     <h3>🟢 Server Status: <span id="status-text">Online</span></h3>
-                    <p>Players: <span id="player-count">${currentPlayers}/${maxPlayers}</span></p>
                     <p>Version: <span id="version-text">${serverVersion}</span></p>
                 `;
             } else {
                 statusElement.textContent = 'Offline';
-                playerElement.textContent = '0/20';
                 statusWidget.className = 'status-offline';
                 statusWidget.innerHTML = `
                     <h3>🔴 Server Status: <span id="status-text">Offline</span></h3>
-                    <p>Players: <span id="player-count">0/20</span></p>
                     <p>Version: <span id="version-text">${serverVersion}</span></p>
                 `;
             }
@@ -219,11 +211,9 @@
             
             // Fallback display when API fails
             statusElement.textContent = 'Unknown';
-            playerElement.textContent = '-/-';
             statusWidget.className = 'status-offline';
             statusWidget.innerHTML = `
                 <h3>❓ Server Status: <span id="status-text">Unknown</span></h3>
-                <p>Players: <span id="player-count">-/-</span></p>
                 <p>Version: <span id="version-text">Unknown</span></p>
                 <p><small>Unable to check status</small></p>
             `;
